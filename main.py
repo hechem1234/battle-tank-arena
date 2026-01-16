@@ -1,4 +1,6 @@
 import pygame
+import sys
+import os
 import random
 from powerup import PowerUp
 from player import Player
@@ -7,23 +9,26 @@ from obstacle import Obstacle
 # -------- INITIALISATION --------
 pygame.init()
 pygame.mixer.init()
+def get_asset(path):
+    base_path = getattr(sys, '_MEIPASS', os.path.dirname(os.path.abspath(__file__)))
+    return os.path.join(base_path, 'assets', path)
 
 WIDTH, HEIGHT = 1500, 750
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Battle Arena 2 Players")
 
 # Charger le background
-background = pygame.image.load("assets/background.jpg").convert()
+background = pygame.image.load(get_asset("background.jpg")).convert()
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
 # Charger le logo de l'entreprise (assurez-vous d'avoir ce fichier dans le dossier assets)
 
-logo = pygame.image.load("assets/MHG11logo.png").convert_alpha()
+logo = pygame.image.load(get_asset("MHG11logo.png")).convert_alpha()
 logo = pygame.transform.scale(logo, (200, 150))  # Ajustez la taille selon votre logo
 has_logo = True
 
 # Musique
-pygame.mixer.music.load("assets/music.mp3.mp3")
+pygame.mixer.music.load(get_asset("music.mp3.mp3"))
 pygame.mixer.music.set_volume(0.1)
 pygame.mixer.music.play(-1)
 music_on = True
@@ -50,14 +55,14 @@ POWER_DELAY = 15000  # 15 secondes
 # -------- FONCTIONS D'INITIALISATION --------
 def create_players():
     """Crée et retourne les deux joueurs"""
-    player1 = Player(100, 100, 50, 50, (0, 100, 255), "ZQSD", "J1", "assets/trank_1png.png")
-    player2 = Player(1440, 690, 50, 50, (255, 100, 0), "ARROWS", "J2", "assets/trank_2.png.png")
+    player1 = Player(100, 100, 50, 50, (0, 100, 255), "ZQSD", "J1", get_asset("trank_1png.png"))
+    player2 = Player(1440, 690, 50, 50, (255, 100, 0), "ARROWS", "J2", get_asset("trank_2.png.png"))
     return player1, player2
 
 player1, player2 = create_players()
 
 # -------- CRÉER OBSTACLES --------
-wall_image = "assets/wall.png"
+wall_image = get_asset("wall.png")
 
 obstacles = [
     # Murs extérieurs
